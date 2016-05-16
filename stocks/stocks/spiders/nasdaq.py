@@ -8,6 +8,10 @@ from scrapy.http import Request
 from scrapy.loader import ItemLoader
 from scrapy.loader.processors import MapCompose
 from spiderUtils import filter_number
+from scrapy.xlib.pydispatch import dispatcher
+from scrapy import signals
+from scrapy.mail import MailSender
+from stocks.emailsettings import emailSettings
 
 
 class NasdaqSpider(scrapy.Spider):
@@ -20,7 +24,9 @@ class NasdaqSpider(scrapy.Spider):
 
 	def __init__(self):
 		super(NasdaqSpider, self).__init__()
-		self.logfile = open('nasdaqcrawl.log', 'w')
+		self.logfile = open('nasdaqcrawl.log', 'wr')
+		self.logfile.write("nasdaq spider start \n")
+		dispatcher.connect(self.spider_closed, signals.spider_closed)
 
 	def parse(self, response):
 		next_alpha = response.xpath('//*[@id="alpha-list"]/ul//li/a/@href')
@@ -68,4 +74,17 @@ class NasdaqSpider(scrapy.Spider):
 		l.add_value('yearlowprice', yearlowprice, MapCompose(unicode.strip))
 		l.add_value('failedurl', response.url)
 
+		l.add_xpath('currentprice', '//*[@id="qwidget_lastsale"]/text()', re='[,.0-9]+')
+
 		return l.load_item()
+
+	def spider_closed(self, spider):
+		if spider is not self:
+			return
+		self.logfile.write("nasdaq spider finish \n")
+		f = open("nasdaqcrawl.log")
+		attachment = [('logfile', 'text/plain', f)]
+		mailer = MailSender.from_settings(emailSettings())
+		mailer.send(to=["leizhaotest@126.com"], subject='nasdaq spider finish', body="finish stock spider", cc=['leizhaotest@126.com'], attachs=attachment)
+		self.logfile.close()
+		f.close()

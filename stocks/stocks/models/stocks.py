@@ -37,6 +37,7 @@ class Stock(Base):
 	description = Column(String(64))
 	yearlowprice = Column(Float, nullable=True)
 	yearhighprice = Column(Float, nullable=True)
+	currentprice = Column(Float, nullable=True)
 
 	def __repr__(self):
 		return '<Stock %r>' % self.name

@@ -8,11 +8,19 @@
 #     http://doc.scrapy.org/en/latest/topics/settings.html
 #     http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 #     http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
+import os
 
 BOT_NAME = 'stocks'
 
 SPIDER_MODULES = ['stocks.spiders']
 NEWSPIDER_MODULE = 'stocks.spiders'
+
+# email settings
+MAIL_HOST = 'smtp.googlemail.com'
+MAIL_PORT = 587
+MAIL_FROM = 'stockScrapy'
+MAIL_USER = os.environ.get('MAIL_USERNAME')
+MAIL_PASS = os.environ.get('MAIL_PASSWORD')
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 # USER_AGENT = 'stock (+http://www.yourdomain.com)'

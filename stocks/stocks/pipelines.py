@@ -21,7 +21,7 @@ class StockPipeline(object):
 			stock = Stock(name=item['name'][0], company=item['company'][0], country=item['country'][0],
 						  ipoyear=item['ipoyear'][0],
 						  description=item['description'][0], yearlowprice=item['yearlowprice'],
-						  yearhighprice=item['yearhighprice'])
+						  yearhighprice=item['yearhighprice'], currentprice=item['currentprice'][0])
 			try:
 				self.session.add(stock)
 				self.session.commit()
@@ -37,6 +37,7 @@ class StockPipeline(object):
 		else:
 			stock.yearlowprice = item['yearlowprice']
 			stock.yearhighprice = item['yearhighprice']
+			stock.currentprice = item['currentprice'][0]
 			try:
 				self.session.add(stock)
 				self.session.commit()

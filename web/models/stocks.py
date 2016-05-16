@@ -22,6 +22,7 @@ class Stock(db.Model):
 	description = db.Column(db.String(64))
 	yearlowprice = db.Column(db.Float, nullable=True)
 	yearhighprice = db.Column(db.Float, nullable=True)
+	currentprice = db.Column(db.Float, nullable=True)
 
 	def __repr__(self):
 		return '<Stock %r>' % self.name
