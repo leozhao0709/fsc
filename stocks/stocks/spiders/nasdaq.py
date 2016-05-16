@@ -82,9 +82,11 @@ class NasdaqSpider(scrapy.Spider):
 		if spider is not self:
 			return
 		self.logfile.write("nasdaq spider finish \n")
+		self.logfile.close()
 		f = open("nasdaqcrawl.log")
 		attachment = [('logfile', 'text/plain', f)]
 		mailer = MailSender.from_settings(emailSettings())
-		mailer.send(to=["leizhaotest@126.com"], subject='nasdaq spider finish', body="finish stock spider", cc=['leizhaotest@126.com'], attachs=attachment)
-		self.logfile.close()
+		mailer.send(to=["lzhao@shutterfly.com"],
+					subject='nasdaq spider finish', body="finish stock spider", cc=['lzhao@shutterfly.com'],
+					attachs=attachment)
 		f.close()
