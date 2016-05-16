@@ -10,8 +10,6 @@ from scrapy.loader.processors import MapCompose
 from spiderUtils import filter_number
 from scrapy.xlib.pydispatch import dispatcher
 from scrapy import signals
-from scrapy.mail import MailSender
-from stocks.emailsettings import emailSettings
 
 
 class NasdaqSpider(scrapy.Spider):
@@ -24,7 +22,7 @@ class NasdaqSpider(scrapy.Spider):
 
 	def __init__(self):
 		super(NasdaqSpider, self).__init__()
-		self.logfile = open('nasdaqcrawl.log', 'wr')
+		self.logfile = open('nasdaqcrawl.log', 'w')
 		self.logfile.write("nasdaq spider start \n")
 		dispatcher.connect(self.spider_closed, signals.spider_closed)
 
@@ -67,14 +65,18 @@ class NasdaqSpider(scrapy.Spider):
 		# price
 		price = response.xpath(
 			'//*[@id="52_week_high_low"]/../following-sibling::td/text()').re(
-			'[.0-9]+')
-		yearhighprice = price[0]
-		yearlowprice = price[1]
-		l.add_value('yearhighprice', yearhighprice, MapCompose(unicode.strip))
-		l.add_value('yearlowprice', yearlowprice, MapCompose(unicode.strip))
+			'[,.0-9]+')
+		# yearhighprice = float(price[0].replace(',', ''))
+		yearhighprice = float(price[0].replace(',', ''))
+		yearlowprice = float(price[1].replace(',', ''))
+		l.add_value('yearhighprice', yearhighprice, MapCompose(float))
+		l.add_value('yearlowprice', yearlowprice, MapCompose(float))
 		l.add_value('failedurl', response.url)
 
-		l.add_xpath('currentprice', '//*[@id="qwidget_lastsale"]/text()', re='[,.0-9]+')
+		# l.add_xpath('currentprice', '//*[@id="qwidget_lastsale"]/text()', re='[,.0-9]+')
+		currentprice = response.xpath('//*[@id="qwidget_lastsale"]/text()').re('[,.0-9]+')
+		currentprice = float(currentprice[0].replace(',', ''))
+		l.add_value('currentprice', currentprice, MapCompose(float))
 
 		return l.load_item()
 
@@ -83,10 +85,3 @@ class NasdaqSpider(scrapy.Spider):
 			return
 		self.logfile.write("nasdaq spider finish \n")
 		self.logfile.close()
-		f = open("nasdaqcrawl.log")
-		attachment = [('logfile', 'text/plain', f)]
-		mailer = MailSender.from_settings(emailSettings())
-		mailer.send(to=["lzhao@shutterfly.com"],
-					subject='nasdaq spider finish', body="finish stock spider", cc=['lzhao@shutterfly.com'],
-					attachs=attachment)
-		f.close()

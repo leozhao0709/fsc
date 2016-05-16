@@ -31,7 +31,7 @@ class Stock(Base):
 
 	id = Column(Integer, primary_key=True)
 	name = Column(String(64), unique=True)
-	company = Column(String(64), unique=True)
+	company = Column(String(64))
 	country = Column(String(64))
 	ipoyear = Column(Integer, nullable=True)
 	description = Column(String(64))
