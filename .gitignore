@@ -6,4 +6,6 @@
 fsc_venv
 
 *.pyc
-stocks/*.log
+
+*.log
+
