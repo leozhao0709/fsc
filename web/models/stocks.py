@@ -16,12 +16,12 @@ class Stock(db.Model):
 	__tablename__ = 'stocks'
 	id = db.Column(db.Integer, primary_key=True)
 	name = db.Column(db.String(64), unique=True)
-	company = db.Column(db.String(64), unique=True)
+	company = db.Column(db.String(64))
 	country = db.Column(db.String(64))
-	ipoyear = db.Column(db.Integer)
+	ipoyear = db.Column(db.Integer, nullable=True)
 	description = db.Column(db.String(64))
-	yearlowprice = db.Column(db.Float)
-	yearhighprice = db.Column(db.Float)
+	yearlowprice = db.Column(db.Float, nullable=True)
+	yearhighprice = db.Column(db.Float, nullable=True)
 
 	def __repr__(self):
 		return '<Stock %r>' % self.name

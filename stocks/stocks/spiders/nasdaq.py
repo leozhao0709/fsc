@@ -7,6 +7,7 @@ from stocks.items import StockItem
 from scrapy.http import Request
 from scrapy.loader import ItemLoader
 from scrapy.loader.processors import MapCompose
+from spiderUtils import filter_number
 
 
 class NasdaqSpider(scrapy.Spider):
@@ -54,7 +55,7 @@ class NasdaqSpider(scrapy.Spider):
 		l.add_value('name', response.meta['name'], MapCompose(unicode.strip))
 		l.add_value('company', response.meta['company'], MapCompose(unicode.strip))
 		l.add_value('country', response.meta['country'], MapCompose(unicode.strip))
-		l.add_value('ipoyear', response.meta['ipoyear'], MapCompose(unicode.strip))
+		l.add_value('ipoyear', response.meta['ipoyear'], MapCompose(unicode.strip, filter_number))
 		l.add_value('description', response.meta['description'], MapCompose(unicode.strip))
 
 		# price
@@ -65,5 +66,6 @@ class NasdaqSpider(scrapy.Spider):
 		yearlowprice = price[1]
 		l.add_value('yearhighprice', yearhighprice, MapCompose(unicode.strip))
 		l.add_value('yearlowprice', yearlowprice, MapCompose(unicode.strip))
+		l.add_value('failedurl', response.url)
 
 		return l.load_item()

@@ -33,10 +33,10 @@ class Stock(Base):
 	name = Column(String(64), unique=True)
 	company = Column(String(64), unique=True)
 	country = Column(String(64))
-	ipoyear = Column(Integer)
+	ipoyear = Column(Integer, nullable=True)
 	description = Column(String(64))
-	yearlowprice = Column(Float)
-	yearhighprice = Column(Float)
+	yearlowprice = Column(Float, nullable=True)
+	yearhighprice = Column(Float, nullable=True)
 
 	def __repr__(self):
 		return '<Stock %r>' % self.name
