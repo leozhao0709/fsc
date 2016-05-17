@@ -22,7 +22,7 @@ class NasdaqSpider(scrapy.Spider):
 
 	def __init__(self):
 		super(NasdaqSpider, self).__init__()
-		self.logfile = open('nasdaqcrawl.log', 'w')
+		self.logfile = open('nasdaqcrawl.txt', 'w')
 		self.logfile.write("nasdaq spider start \n")
 		dispatcher.connect(self.spider_closed, signals.spider_closed)
 

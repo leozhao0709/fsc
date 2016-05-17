@@ -9,4 +9,5 @@ fsc_venv
 
 *.log
 
+stocks/*.txt
 

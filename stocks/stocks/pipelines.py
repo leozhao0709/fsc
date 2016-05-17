@@ -15,7 +15,7 @@ class StockPipeline(object):
 	def __init__(self):
 		Session = sessionmaker(bind=engine)
 		self.session = Session()
-		self.logfile = open('stockpipeline.log', 'w')
+		self.logfile = open('stockpipeline.txt', 'w')
 		self.logfile.write("stock pipeline start \n")
 		self.emailContent = {}
 
@@ -61,7 +61,7 @@ class StockPipeline(object):
 
 	def close_spider(self, spider):
 		self.logfile.write("stock pipeline finish \n")
-		pipelog = open("stockpipeline.log")
+		pipelog = open("stockpipeline.txt")
 		if spider.name == "nasdaq":
 			# mail body
 			mail_body = "please consider the following {count} stocks: \n".format(count=len(self.emailContent))
@@ -75,7 +75,7 @@ class StockPipeline(object):
 																									   yearhighprice=
 																									   price[2])
 
-			nasdaqlog = open("nasdaqcrawl.log")
+			nasdaqlog = open("nasdaqcrawl.txt")
 			attachment = [('nasdaqlog', 'text/plain', nasdaqlog), ('pipelog', 'text/plain', pipelog)]
 			mailer = MailSender.from_settings(emailSettings())
 			mailer.send(to=["leizhaotest@126.com"],
