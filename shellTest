@@ -1,5 +1,0 @@
-#!/bin/zsh
-alias cmd1="source /Users/lzhao/Documents/my_git/fsc/fsc_venv/bin/activate"
-alias cmd2="cd /Users/lzhao/Documents/my_git/fsc/stocks"
-alias cmd3="scrapy crawl nasdaq"
-cmd1 && cmd2 && cmd3

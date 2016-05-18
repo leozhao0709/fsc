@@ -11,3 +11,7 @@ fsc_venv
 
 stocks/*.txt
 
+
+*.stderr
+
+*.stdout

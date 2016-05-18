@@ -76,7 +76,7 @@ class StockPipeline(object):
 																									   price[2])
 
 			nasdaqlog = open("nasdaqcrawl.txt")
-			attachment = [('nasdaqlog', 'text/plain', nasdaqlog), ('pipelog', 'text/plain', pipelog)]
+			attachment = [('nasdaqlog.txt', 'text/plain', nasdaqlog), ('pipelog.txt', 'text/plain', pipelog)]
 			mailer = MailSender.from_settings(emailSettings())
 			mailer.send(to=["leizhaotest@126.com"],
 						subject='nasdaq spider finish', body=mail_body, cc=["leo.zhao.real@gmail.com"],
