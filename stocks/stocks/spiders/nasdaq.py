@@ -66,17 +66,20 @@ class NasdaqSpider(scrapy.Spider):
 		price = response.xpath(
 			'//*[@id="52_week_high_low"]/../following-sibling::td/text()').re(
 			'[,.0-9]+')
-		# yearhighprice = float(price[0].replace(',', ''))
 		yearhighprice = float(price[0].replace(',', ''))
 		yearlowprice = float(price[1].replace(',', ''))
 		l.add_value('yearhighprice', yearhighprice, MapCompose(float))
 		l.add_value('yearlowprice', yearlowprice, MapCompose(float))
 		l.add_value('failedurl', response.url)
 
-		# l.add_xpath('currentprice', '//*[@id="qwidget_lastsale"]/text()', re='[,.0-9]+')
 		currentprice = response.xpath('//*[@id="qwidget_lastsale"]/text()').re('[,.0-9]+')
 		currentprice = float(currentprice[0].replace(',', ''))
 		l.add_value('currentprice', currentprice, MapCompose(float))
+
+		shareVolume = response.xpath('//*[@id="share_volume"]/../following-sibling::td/label/text()').re('[,0-9]+')
+		shareVolume = int(shareVolume[0].replace(',', ''))
+		l.add_value('sharevolume', shareVolume)
+
 
 		return l.load_item()
 

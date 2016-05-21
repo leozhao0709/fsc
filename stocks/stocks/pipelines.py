@@ -25,7 +25,8 @@ class StockPipeline(object):
 			stock = Stock(name=item['name'][0], company=item['company'][0], country=item['country'][0],
 						  ipoyear=item['ipoyear'][0],
 						  description=item['description'][0], yearlowprice=item['yearlowprice'][0],
-						  yearhighprice=item['yearhighprice'][0], currentprice=item['currentprice'][0])
+						  yearhighprice=item['yearhighprice'][0], currentprice=item['currentprice'][0],
+						  sharevolume=item['sharevolume'][0])
 			try:
 				self.session.add(stock)
 				self.session.commit()
@@ -42,8 +43,9 @@ class StockPipeline(object):
 			stock.yearlowprice = item['yearlowprice'][0]
 			stock.yearhighprice = item['yearhighprice'][0]
 			stock.currentprice = item['currentprice'][0]
-			if stock.yearlowprice > stock.currentprice:
-				self.emailContent[item['name'][0]] = [stock.currentprice, stock.yearlowprice, stock.yearhighprice]
+			stock.sharevolume = item['sharevolume'][0]
+			if stock.yearlowprice > stock.currentprice and stock.sharevolume > 100000:
+				self.emailContent[item['name'][0]] = [stock.currentprice, stock.yearlowprice, stock.yearhighprice, stock.sharevolume]
 			try:
 				self.session.add(stock)
 				self.session.commit()
@@ -65,15 +67,9 @@ class StockPipeline(object):
 		if spider.name == "nasdaq":
 			# mail body
 			mail_body = "please consider the following {count} stocks: \n".format(count=len(self.emailContent))
-			mail_body += "name	currentprice	yearlowprice	yearhighprice\n"
-			for name, price in self.emailContent.items():
-				mail_body += "{name}	{currentprice}	{yearlowprice}	{yearhighprice} \n".format(name=name,
-																									   currentprice=
-																									   price[0],
-																									   yearlowprice=
-																									   price[1],
-																									   yearhighprice=
-																									   price[2])
+			for name, content in self.emailContent.items():
+				mail_body += "{name}	{currentprice}	{yearlowprice}	{yearhighprice}	{sharevolume} \n".format(
+					name=name, currentprice=content[0], yearlowprice=content[1], yearhighprice=content[2], sharevolume=content[3])
 
 			nasdaqlog = open("nasdaqcrawl.txt")
 			attachment = [('nasdaqlog.txt', 'text/plain', nasdaqlog), ('pipelog.txt', 'text/plain', pipelog)]

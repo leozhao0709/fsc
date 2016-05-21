@@ -38,6 +38,7 @@ class Stock(Base):
 	yearlowprice = Column(Float, nullable=True)
 	yearhighprice = Column(Float, nullable=True)
 	currentprice = Column(Float, nullable=True)
+	sharevolume = Column(Integer, nullable=True)
 
 	def __repr__(self):
 		return '<Stock %r>' % self.name

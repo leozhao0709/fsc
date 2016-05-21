@@ -20,3 +20,4 @@ class StockItem(scrapy.Item):
 	yearhighprice = scrapy.Field()
 	failedurl = scrapy.Field()
 	currentprice = scrapy.Field()
+	sharevolume = scrapy.Field()
