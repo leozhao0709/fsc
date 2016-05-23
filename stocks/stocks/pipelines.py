@@ -9,6 +9,7 @@ from sqlalchemy.orm import sessionmaker
 from datetime import datetime
 from scrapy.mail import MailSender
 from stocks.emailsettings import emailSettings
+from datetime import datetime
 
 
 class StockPipeline(object):
@@ -44,6 +45,7 @@ class StockPipeline(object):
 			stock.yearhighprice = item['yearhighprice'][0]
 			stock.currentprice = item['currentprice'][0]
 			stock.sharevolume = item['sharevolume'][0]
+			stock.updatetime = datetime.now()
 			if stock.yearlowprice > stock.currentprice and stock.sharevolume > 100000:
 				self.emailContent[item['name'][0]] = [stock.currentprice, stock.yearlowprice, stock.yearhighprice, stock.sharevolume]
 			try:

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 from web import db
+from datetime import datetime
 
 __author__ = 'lzhao'
 __date__ = '5/14/16'
@@ -24,6 +25,7 @@ class Stock(db.Model):
 	yearhighprice = db.Column(db.Float, nullable=True)
 	currentprice = db.Column(db.Float, nullable=True)
 	sharevolume = db.Column(db.Integer, nullable=True)
+	updatetime = db.Column(db.DateTime, default=datetime.now)
 
 	def __repr__(self):
 		return '<Stock %r>' % self.name

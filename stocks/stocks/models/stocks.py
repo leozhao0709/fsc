@@ -2,8 +2,9 @@
 import logging
 
 import os
-from sqlalchemy import create_engine, Column, Integer, String, Float
+from sqlalchemy import create_engine, Column, Integer, String, Float, DateTime
 from sqlalchemy.ext.declarative import declarative_base
+from datetime import datetime
 
 __author__ = 'lzhao'
 __date__ = '5/15/16'
@@ -39,6 +40,7 @@ class Stock(Base):
 	yearhighprice = Column(Float, nullable=True)
 	currentprice = Column(Float, nullable=True)
 	sharevolume = Column(Integer, nullable=True)
+	updatetime = Column(DateTime, default=datetime.now)
 
 	def __repr__(self):
 		return '<Stock %r>' % self.name
