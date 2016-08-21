@@ -76,7 +76,7 @@ class StockPipeline(object):
 			nasdaqlog = open("nasdaqcrawl.txt")
 			attachment = [('nasdaqlog.txt', 'text/plain', nasdaqlog), ('pipelog.txt', 'text/plain', pipelog)]
 			mailer = MailSender.from_settings(emailSettings())
-			mailer.send(to=["leizhaotest@126.com", "alexaxiong@gmail.com"],
+			mailer.send(to=["alexaxiong@gmail.com"],
 						subject='nasdaq spider finish', body=mail_body, cc=["leo.zhao.real@gmail.com"],
 						attachs=attachment)
 			nasdaqlog.close()
